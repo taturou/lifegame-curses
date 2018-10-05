@@ -6,8 +6,8 @@ use rand::Rng;
 #[derive(Debug)]
 struct LifeGame {
     world :Vec<bool>,
-    width: usize,
-    height: usize
+    width: isize,
+    height: isize
 }
 
 impl LifeGame {
@@ -17,30 +17,46 @@ impl LifeGame {
 
         LifeGame {
             world,
-            width,
-            height
+            width: width as isize,
+            height: height as isize
         }
     }
 
-    fn xy2i(&self, x: usize, y: usize) -> usize {
-        (self.width * y) + x
+    fn xy2i(&self, x: isize, y: isize) -> usize {
+        ((self.width * y) + x) as usize
     }
 
-    fn get(&self, x: usize, y: usize) -> bool {
+    fn get(&self, x: isize, y: isize) -> bool {
+        let x = if x < 0 {
+            self.width - x
+        } else if x >= self.width {
+            x - self.width
+        } else {
+            x
+        };
+
+        let y = if y < 0 {
+            self.height - y
+        } else if y >= self.height {
+            y - self.height
+        } else {
+            y
+        };
+
         let i = self.xy2i(x, y);
         self.world[i]
     }
     
-    fn set(&mut self, x: usize, y: usize, cell: bool) {
+    fn set(&mut self, x: isize, y: isize, cell: bool) {
         let i = self.xy2i(x, y);
         self.world[i] = cell;
     }
     
-    pub fn width(&self) -> usize {
+    pub fn width(&self) -> isize {
         self.width
     }
     
-    pub fn height(&self) -> usize {
+    pub fn height(&self) -> isize {
         self.height
     }
 
