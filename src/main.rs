@@ -60,6 +60,16 @@ impl LifeGame {
         self.height
     }
 
+    pub fn evolution(&mut self) -> &Self {
+        for y in 0..self.height {
+            for x in 0..self.width {
+                let cell = TBD
+                self.set(x, y, cell);
+            }
+        }
+        self
+    }
+
     pub fn reset_by_rand(&mut self) -> &Self {
         for y in 0..self.height {
             for x in 0..self.width {
