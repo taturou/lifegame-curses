@@ -63,8 +63,13 @@ impl LifeGame {
     pub fn reset_by_rand(&mut self) -> &Self {
         for y in 0..self.height {
             for x in 0..self.width {
-                self.set(x, y, 
-                         if rand::thread_rng().gen_range(0, 100) > 50 { true } else { false });
+                let cell = 
+                    if rand::thread_rng().gen_range(0, 100) > 50 {
+                        true
+                    } else {
+                        false
+                    };
+                self.set(x, y, cell);
             }
         }
         self
