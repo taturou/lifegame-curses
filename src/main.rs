@@ -10,6 +10,7 @@ use cursive::Printer;
 use cursive::direction::Direction;
 use cursive::vec::Vec2;
 use cursive::event::{Event, EventResult, MouseButton, MouseEvent};
+use cursive::theme::{BaseColor, Color, ColorStyle};
 
 struct Game {
     game: LifeGame
@@ -32,17 +33,13 @@ impl cursive::view::View for Game {
         for y in 0..height {
             for x in 0..width {
                 let cell = self.game.get(x, y);
-                /*
-                let text = match cell {
-                    true => "\u{25a0}",
-                    false => "\u{25a1}"
+                let (text, color) = match cell {
+                    true => ("o", Color::Dark(BaseColor::Red)),
+                    false => (".", Color::Light(BaseColor::Black))
                 };
-                */
-                let text = match cell {
-                    true => "o",
-                    false => "."
-                };
-                printer.print(((x * 2) as usize, y as usize), text);
+                printer.with_color(
+                    ColorStyle::new(color, Color::Dark(BaseColor::White)), 
+                    |printer| printer.print(((x * 2) as usize, y as usize), text));
             }
         }
     }
