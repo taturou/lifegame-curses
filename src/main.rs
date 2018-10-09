@@ -32,9 +32,15 @@ impl cursive::view::View for Game {
         for y in 0..height {
             for x in 0..width {
                 let cell = self.game.get(x, y);
+                /*
                 let text = match cell {
                     true => "\u{25a0}",
                     false => "\u{25a1}"
+                };
+                */
+                let text = match cell {
+                    true => "o",
+                    false => "."
                 };
                 printer.print(((x * 2) as usize, y as usize), text);
             }
