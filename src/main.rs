@@ -15,8 +15,8 @@ struct Game {
 }
 
 impl Game {
-    fn new() -> Game {
-        let mut game = LifeGame::new(20, 10);
+    fn new(width: isize, height: isize) -> Game {
+        let mut game = LifeGame::new(width, height);
         game.reset_by_rand();
         Game {
             game
@@ -77,7 +77,7 @@ fn main() {
             .title("LifeGame")
             .content(
                 Panel::new(
-                    Game::new().with_id("game"))
+                    Game::new(80, 40).with_id("game"))
             ).button("Random", |s| {
                 s.call_on_id("game", |view: &mut Game| {
                     view.game.reset_by_rand();
