@@ -5,7 +5,7 @@ mod lifegame;
 use lifegame::*;
 use cursive::traits::*;
 use cursive::Cursive;
-use cursive::views::{Dialog, LinearLayout, Panel};
+use cursive::views::{Dialog, Panel};
 use cursive::Printer;
 use cursive::direction::Direction;
 use cursive::vec::Vec2;
