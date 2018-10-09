@@ -103,6 +103,13 @@ impl LifeGame {
         self
     }
 
+    pub fn reset(&mut self) -> &Self {
+        for cell in &mut self.world {
+            *cell = false;
+        }
+        self
+    }
+
     pub fn reset_by_rand(&mut self) -> &Self {
         for y in 0..self.height {
             for x in 0..self.width {
