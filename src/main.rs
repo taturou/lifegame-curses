@@ -17,8 +17,7 @@ struct Game {
 
 impl Game {
     fn new(width: isize, height: isize) -> Game {
-        let mut game = LifeGame::new(width, height);
-        game.reset_by_rand();
+        let game = LifeGame::new(width, height);
         Game {
             game
         }
