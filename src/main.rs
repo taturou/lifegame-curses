@@ -62,6 +62,8 @@ impl cursive::view::View for Game {
 fn main() {
     let mut siv = Cursive::default();
 
+    let screen_size = siv.screen_size();
+
     siv.add_global_callback('r', |s| {
         s.call_on_id("game", |view: &mut Game| {
             view.game.reset_by_rand();
@@ -83,7 +85,9 @@ fn main() {
             .title("LifeGame")
             .content(
                 Panel::new(
-                    Game::new(80, 40).with_id("game"))
+                    Game::new(((screen_size.x as isize) / 2) - 6,
+                               (screen_size.y as isize) - 10)
+                    .with_id("game"))
             ).button("Random", |s| {
                 s.call_on_id("game", |view: &mut Game| {
                     view.game.reset_by_rand();
