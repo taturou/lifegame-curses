@@ -68,7 +68,7 @@ fn main() {
         });
     });
 
-    siv.add_global_callback('n', |s| {
+    siv.add_global_callback('e', |s| {
         s.call_on_id("game", |view: &mut Game| {
             view.game.evolution();
         });
