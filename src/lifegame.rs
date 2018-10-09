@@ -69,16 +69,16 @@ impl LifeGame {
     }
 
     pub fn evolution(&mut self) -> &Self {
-        fn cell_evolution(lg: &LifeGame , x: isize, y: isize) -> bool {
+        fn cell_evolution(game: &LifeGame , x: isize, y: isize) -> bool {
             let mut count: usize = 0;
-            for j in (y-1)..(y+1) {
-                for i in (x-1)..(x+1) {
-                    count += lg.get_as_num(i, j);
+            for j in (y-1)..(y+2) {
+                for i in (x-1)..(x+2) {
+                    count += game.get_as_num(i, j);
                 }
             }
-            count -= lg.get_as_num(x, y);
+            count -= game.get_as_num(x, y);
 
-            if lg.get(x, y) {
+            if game.get(x, y) {
                 match count {
                     2 | 3 => true,
                     0 | 1 => false,
