@@ -3,6 +3,7 @@ extern crate cursive;
 mod lifegame;
 
 use lifegame::*;
+use cursive::traits::*;
 use cursive::Cursive;
 use cursive::views::{Dialog, LinearLayout, Panel};
 use cursive::Printer;
@@ -53,30 +54,43 @@ impl cursive::view::View for Game {
 }
 
 fn main() {
-    /*
-    let mut game = LifeGame::new(20, 10);
-    println!("{}", game);
-
-    game.reset_by_rand();
-    println!("{}", game);
-
-    game.evolution();
-    println!("{}", game);
-    */
     let mut siv = Cursive::default();
 
-    siv.add_global_callback('q', |s| s.quit());
+    siv.add_global_callback('r', |s| {
+        s.call_on_id("game", |view: &mut Game| {
+            view.game.reset_by_rand();
+        });
+    });
+
+    siv.add_global_callback('n', |s| {
+        s.call_on_id("game", |view: &mut Game| {
+            view.game.evolution();
+        });
+    });
+
+    siv.add_global_callback('q', |s| {
+        s.quit()
+    });
 
     siv.add_layer(
         Dialog::new()
             .title("LifeGame")
             .content(
-                LinearLayout::horizontal()
-                    .child(Panel::new(Game::new())),
-            ).button("Quit game", |s| {
-                s.quit();
-            }),
+                Panel::new(
+                    Game::new().with_id("game"))
+            ).button("Random", |s| {
+                s.call_on_id("game", |view: &mut Game| {
+                    view.game.reset_by_rand();
+                });
+            }).button("Evolution", |s| {
+                s.call_on_id("game", |view: &mut Game| {
+                    view.game.evolution();
+                });
+            }).button("Quit", |s| {
+                s.quit()
+            })
     );
 
+    siv.set_fps(60);
     siv.run();
 }
