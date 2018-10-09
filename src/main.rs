@@ -9,6 +9,7 @@ use cursive::views::{Dialog, Panel};
 use cursive::Printer;
 use cursive::direction::Direction;
 use cursive::vec::Vec2;
+use cursive::event::{Event, EventResult, MouseButton, MouseEvent};
 
 struct Game {
     game: LifeGame
@@ -56,6 +57,32 @@ impl cursive::view::View for Game {
             (self.game.width() * 2) as usize,
             self.game.height() as usize
         )
+    }
+
+    fn on_event(&mut self, event: Event) -> EventResult {
+        match event {
+            Event::Mouse {
+                offset,
+                position,
+                event: MouseEvent::Release(button)
+            } => {
+                match button {
+                    MouseButton::Left => {
+                        if (position.x >= offset.x) && (position.y >= offset.y) {
+                            let x = ((position.x - offset.x) / 2) as isize;
+                            let y = (position.y - offset.y) as isize;
+                            let cell = self.game.get(x, y);
+
+                            self.game.set(x, y, if cell { false } else { true});
+                        }
+                        return EventResult::Consumed(None);
+                    },
+                    _ => ()
+                }
+            },
+            _ => ()
+        };
+        EventResult::Ignored
     }
 }
 
