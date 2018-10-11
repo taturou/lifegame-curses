@@ -67,9 +67,11 @@ impl cursive::view::View for Game {
                         if (position.x >= offset.x) && (position.y >= offset.y) {
                             let x = ((position.x - offset.x) / 2) as isize;
                             let y = (position.y - offset.y) as isize;
-                            let cell = self.game.get(x, y);
 
-                            self.game.set(x, y, if cell { false } else { true});
+                            if (x < self.game.width()) && (y < self.game.height()) {
+                                let cell = self.game.get(x, y);
+                                self.game.set(x, y, if cell { false } else { true});
+                            }
                         }
                         return EventResult::Consumed(None);
                     },
