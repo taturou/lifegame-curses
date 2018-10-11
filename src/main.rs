@@ -6,12 +6,13 @@ use std::sync::Arc;
 use std::sync::RwLock;
 use lifegame::*;
 use cursive::Cursive;
-use cursive::views::{Dialog, Panel};
+use cursive::views::{Dialog, Panel, LinearLayout, TextView, TextContent};
 use cursive::Printer;
 use cursive::direction::Direction;
 use cursive::vec::Vec2;
 use cursive::event::{Event, EventResult, MouseButton, MouseEvent};
 use cursive::theme::{BaseColor, Color, ColorStyle};
+use cursive::align::Align;
 
 struct Game {
     game: Arc<RwLock<LifeGame>>
@@ -94,11 +95,18 @@ fn main() {
     let mut siv = Cursive::default();
     let screen_size = siv.screen_size();
 
+    let gen = TextContent::new("Generation: 0");
+    let mut gen_evo = gen.clone();
+
     let game = Arc::new(
                 RwLock::new(
-                    LifeGame::new(
-                        ((screen_size.x as isize) / 2) - 6,
-                        (screen_size.y as isize) - 10)));
+                    LifeGame::new(((screen_size.x as isize) / 2) - 6,
+                                  (screen_size.y as isize) - 11)
+                        .on_evolution(move |generation| {
+                            let str = format!("Generation: {}", generation);
+                            gen_evo.set_content(str);
+                        })
+                    ));
     let game_key_c = game.clone();
     let game_key_r = game.clone();
     let game_key_e = game.clone();
@@ -126,8 +134,9 @@ fn main() {
         Dialog::new()
             .title("LifeGame")
             .content(
-                Panel::new(
-                    Game::new(game.clone()))
+                LinearLayout::vertical()
+                    .child(TextView::new_with_content(gen.clone()).align(Align::top_right()))
+                    .child(Panel::new(Game::new(game.clone())))
             ).button("Clear", move |_| {
                 game_btn_c.write().unwrap().reset();
             }).button("Random", move |_| {
