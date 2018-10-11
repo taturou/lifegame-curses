@@ -2,11 +2,14 @@
 
 This is yet another 'Conway's Game of Life'.
 
+![random](doc/images/lifegame-anime-random.gif)
+![manual](doc/images/lifegame-anime-manual.gif)
+
 ## Feature
 
 * Made by Rust langurage
 * TUI (Text User Interface) by curses library
-* Usable not only keyboard but also mouse 
+* Usable not only keyboard but also mouse
 
 ## Require
 
