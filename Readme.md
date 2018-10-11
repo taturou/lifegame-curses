@@ -37,9 +37,9 @@ This requires the following products and libraries to build.
 * A curses library
     * A terminal control library that is supported by Cursive.
 
-## Build
+## Build & Run
 
-How to build on Ubuntu linux.
+How to run on Ubuntu linux.
 
 1. Clone from GitHub.
 
@@ -65,6 +65,8 @@ $ cargo run
 
 * Auto evolution
     * Now you need to keep clicking the `<Evolution>` button.
+* Display generation
+* Automatic detection of convergence
 
 ## License
 
