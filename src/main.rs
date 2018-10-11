@@ -5,7 +5,6 @@ mod lifegame;
 use std::sync::Arc;
 use std::sync::RwLock;
 use lifegame::*;
-use cursive::traits::*;
 use cursive::Cursive;
 use cursive::views::{Dialog, Panel};
 use cursive::Printer;
@@ -100,23 +99,23 @@ fn main() {
                     LifeGame::new(
                         ((screen_size.x as isize) / 2) - 6,
                         (screen_size.y as isize) - 10)));
+    let game_key_c = game.clone();
+    let game_key_r = game.clone();
+    let game_key_e = game.clone();
+    let game_btn_c = game.clone();
+    let game_btn_r = game.clone();
+    let game_btn_e = game.clone();
 
-    siv.add_global_callback('c', |s| {
-        s.call_on_id("game", |view: &mut Game| {
-            view.game.write().unwrap().reset();
-        });
+    siv.add_global_callback('c', move |_| {
+        game_key_c.write().unwrap().reset();
     });
 
-    siv.add_global_callback('r', |s| {
-        s.call_on_id("game", |view: &mut Game| {
-            view.game.write().unwrap().reset_by_rand();
-        });
+    siv.add_global_callback('r', move |_| {
+        game_key_r.write().unwrap().reset_by_rand();
     });
 
-    siv.add_global_callback('e', |s| {
-        s.call_on_id("game", |view: &mut Game| {
-            view.game.write().unwrap().evolution();
-        });
+    siv.add_global_callback('e', move |_| {
+        game_key_e.write().unwrap().evolution();
     });
 
     siv.add_global_callback('q', |s| {
@@ -128,20 +127,13 @@ fn main() {
             .title("LifeGame")
             .content(
                 Panel::new(
-                    Game::new(game.clone())
-                    .with_id("game"))
-            ).button("Clear", |s| {
-                s.call_on_id("game", |view: &mut Game| {
-                    view.game.write().unwrap().reset();
-                });
-            }).button("Random", |s| {
-                s.call_on_id("game", |view: &mut Game| {
-                    view.game.write().unwrap().reset_by_rand();
-                });
-            }).button("Evolution", |s| {
-                s.call_on_id("game", |view: &mut Game| {
-                    view.game.write().unwrap().evolution();
-                });
+                    Game::new(game.clone()))
+            ).button("Clear", move |_| {
+                game_btn_c.write().unwrap().reset();
+            }).button("Random", move |_| {
+                game_btn_r.write().unwrap().reset_by_rand();
+            }).button("Evolution", move |_| {
+                game_btn_e.write().unwrap().evolution();
             }).button("Quit", |s| {
                 s.quit()
             })
