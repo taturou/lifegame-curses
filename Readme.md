@@ -67,6 +67,7 @@ $ cargo run
     * Now you need to keep clicking the `<Evolution>` button.
 * Display generation
 * Automatic detection of convergence
+* Refactoring to Rust-ish
 
 ## License
 
