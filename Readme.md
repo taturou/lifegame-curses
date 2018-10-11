@@ -61,6 +61,11 @@ $ cargo build
 $ cargo run
 ```
 
+## Future work
+
+* Auto evolution
+    * Now you need to keep clicking the `<Evolution>` button.
+
 ## License
 
 MIT License
