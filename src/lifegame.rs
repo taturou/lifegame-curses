@@ -3,11 +3,12 @@ extern crate rand;
 use std::fmt;
 use self::rand::Rng;
 
-#[derive(Debug)]
 pub struct LifeGame {
+    generation: usize,
     world :Vec<bool>,
     width: isize,
-    height: isize
+    height: isize,
+    cb_evolution: Box<FnMut(usize)>
 }
 
 impl LifeGame {
@@ -16,9 +17,11 @@ impl LifeGame {
         let world = vec![false; len];
 
         LifeGame {
+            generation: 0,
             world,
             width,
-            height
+            height,
+            cb_evolution: Box::new(|_| {})
         }
     }
 
@@ -99,7 +102,9 @@ impl LifeGame {
                 new.set(x, y, cell);
             }
         }
-        *self = new;
+        self.world = new.world;
+        let new_generation = self.generation() + 1;
+        self.set_generation(new_generation);
         self
     }
 
@@ -107,6 +112,7 @@ impl LifeGame {
         for cell in &mut self.world {
             *cell = false;
         }
+        self.set_generation(0);
         self
     }
 
@@ -122,7 +128,23 @@ impl LifeGame {
                 self.set(x, y, cell);
             }
         }
+        self.set_generation(0);
         self
+    }
+
+    pub fn on_evolution<F>(mut self, callback: F) -> Self
+        where F: FnMut(usize) + 'static {
+        self.cb_evolution = Box::new(callback);
+        self
+    }
+
+    pub fn generation(&self) -> usize {
+        self.generation
+    }
+
+    fn set_generation(&mut self, generation: usize) {
+        self.generation = generation;
+        (self.cb_evolution)(generation);
     }
 }
 
