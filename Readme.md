@@ -10,6 +10,7 @@ This is yet another 'Conway's Game of Life'.
 * Made by Rust langurage
 * TUI (Text User Interface) by curses library
 * Usable not only keyboard but also mouse
+* Display the generation and total cells
 
 ## Usage
 
