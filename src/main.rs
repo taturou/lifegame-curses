@@ -78,6 +78,7 @@ impl cursive::view::View for Game {
                             if (x < game.width()) && (y < game.height()) {
                                 let cell = game.get(x, y);
                                 game.set(x, y, if cell { false } else { true});
+                                game.call_evolution();
                             }
                         }
                         return EventResult::Consumed(None);
@@ -95,16 +96,18 @@ fn main() {
     let mut siv = Cursive::default();
     let screen_size = siv.screen_size();
 
-    let gen = TextContent::new("Generation: 0");
-    let mut gen_evo = gen.clone();
+    let info = TextContent::new("Gen:0, Cells:0");
+    let mut info_on_evo = info.clone();
 
     let game = Arc::new(
                 RwLock::new(
                     LifeGame::new(((screen_size.x as isize) / 2) - 6,
                                   (screen_size.y as isize) - 11)
-                        .on_evolution(move |generation| {
-                            let str = format!("Generation: {}", generation);
-                            gen_evo.set_content(str);
+                        .on_evolution(move |info| {
+                            let str = format!("Gen:{}, Cells:{}",
+                                              info.generation,
+                                              info.num_cells);
+                            info_on_evo.set_content(str);
                         })
                     ));
     let game_key_c = game.clone();
@@ -135,7 +138,7 @@ fn main() {
             .title("LifeGame")
             .content(
                 LinearLayout::vertical()
-                    .child(TextView::new_with_content(gen.clone()).align(Align::top_right()))
+                    .child(TextView::new_with_content(info.clone()).align(Align::top_right()))
                     .child(Panel::new(Game::new(game.clone())))
             ).button("Clear", move |_| {
                 game_btn_c.write().unwrap().reset();
