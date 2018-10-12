@@ -78,7 +78,7 @@ impl cursive::view::View for Game {
                             if (x < game.width()) && (y < game.height()) {
                                 let cell = game.get(x, y);
                                 game.set(x, y, if cell { false } else { true});
-                                game.call_evolution();
+                                game.on_evolution();
                             }
                         }
                         return EventResult::Consumed(None);
@@ -103,7 +103,7 @@ fn main() {
                 RwLock::new(
                     LifeGame::new(((screen_size.x as isize) / 2) - 6,
                                   (screen_size.y as isize) - 11)
-                        .on_evolution(move |info| {
+                        .set_evolution_callback(move |info| {
                             let str = format!("Gen:{}, Cells:{}",
                                               info.generation,
                                               info.num_cells);
