@@ -78,7 +78,6 @@ impl cursive::view::View for Game {
                             if (x < game.width()) && (y < game.height()) {
                                 let cell = game.get(x, y);
                                 game.set(x, y, if cell { false } else { true});
-                                game.on_evolution();
                             }
                         }
                         return EventResult::Consumed(None);
@@ -97,17 +96,35 @@ fn main() {
     let screen_size = siv.screen_size();
 
     let info = TextContent::new("Gen:0, Cells:0");
-    let mut info_on_evo = info.clone();
+    let mut info_on = info.clone();
 
     let game = Arc::new(
                 RwLock::new(
                     LifeGame::new(((screen_size.x as isize) / 2) - 6,
                                   (screen_size.y as isize) - 11)
-                        .set_evolution_callback(move |info| {
-                            let str = format!("Gen:{}, Cells:{}",
-                                              info.generation,
-                                              info.num_cells);
-                            info_on_evo.set_content(str);
+                        .set_callback(move |info| {
+                            let mut str = format!("Gen:{}, Cells:{}",
+                                        info.generation,
+                                        info.num_cells);
+                            match info {
+                                CallbackInfo {
+                                    event: CallbackEvent::Set,
+                                    generation: _,
+                                    width: _,
+                                    height: _,
+                                    num_cells: _,
+                                    cell: Some(cell),
+                                } => {
+                                    let live = if cell.live { "Live" } else { "Dead" };
+                                    str = format!("{}, {}:({},{})",
+                                            str,
+                                            live,
+                                            cell.x,
+                                            cell.y);
+                                },
+                                _ => ()
+                            }
+                            info_on.set_content(str);
                         })
                     ));
     let game_key_c = game.clone();

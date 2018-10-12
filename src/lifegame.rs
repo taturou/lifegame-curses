@@ -8,14 +8,27 @@ pub struct LifeGame {
     world :Vec<bool>,
     width: isize,
     height: isize,
-    cb_evolution: Box<FnMut(LifeGameInfo)>
+    callback: Box<FnMut(CallbackInfo)>,
 }
 
-pub struct LifeGameInfo {
+pub struct CellInfo {
+    pub x: isize,
+    pub y: isize,
+    pub live: bool
+}
+
+pub enum CallbackEvent {
+    Set,
+    Evolution
+}
+
+pub struct CallbackInfo {
+    pub event: CallbackEvent,
     pub generation: usize,
     pub width: isize,
     pub height: isize,
-    pub num_cells: usize
+    pub num_cells: usize,
+    pub cell: Option<CellInfo>
 }
 
 impl LifeGame {
@@ -28,7 +41,7 @@ impl LifeGame {
             world,
             width,
             height,
-            cb_evolution: Box::new(|_| {})
+            callback: Box::new(|_| {}),
         }
     }
 
@@ -58,16 +71,21 @@ impl LifeGame {
     }
 
     fn get_as_num(&self, x: isize, y: isize) -> usize {
-        let cell = self.get(x, y);
-        match cell {
+        let live = self.get(x, y);
+        match live {
             true => 1,
             false => 0
         }
     }
 
-    pub fn set(&mut self, x: isize, y: isize, cell: bool) {
+    fn set_without_callback(&mut self, x: isize, y: isize, live: bool) {
         let i = self.xy2i(x, y);
-        self.world[i] = cell;
+        self.world[i] = live;
+    }
+
+    pub fn set(&mut self, x: isize, y: isize, live: bool) {
+        self.set_without_callback(x, y, live);
+        self.on_set(x, y, live);
     }
 
     pub fn width(&self) -> isize {
@@ -105,8 +123,8 @@ impl LifeGame {
         let mut new = LifeGame::new(self.width, self.height);
         for y in 0..self.height {
             for x in 0..self.width {
-                let cell = cell_evolution(self, x, y);
-                new.set(x, y, cell);
+                let live = cell_evolution(self, x, y);
+                new.set_without_callback(x, y, live);
             }
         }
         self.world = new.world;
@@ -116,8 +134,8 @@ impl LifeGame {
     }
 
     pub fn reset(&mut self) -> &Self {
-        for cell in &mut self.world {
-            *cell = false;
+        for live in &mut self.world {
+            *live = false;
         }
         self.set_generation(0);
         self
@@ -126,22 +144,16 @@ impl LifeGame {
     pub fn reset_by_rand(&mut self) -> &Self {
         for y in 0..self.height {
             for x in 0..self.width {
-                let cell =
+                let live =
                     if rand::thread_rng().gen_range(0, 100) > 50 {
                         true
                     } else {
                         false
                     };
-                self.set(x, y, cell);
+                self.set_without_callback(x, y, live);
             }
         }
         self.set_generation(0);
-        self
-    }
-
-    pub fn set_evolution_callback<F>(mut self, callback: F) -> Self
-        where F: FnMut(LifeGameInfo) + 'static {
-        self.cb_evolution = Box::new(callback);
         self
     }
 
@@ -154,19 +166,40 @@ impl LifeGame {
         self.on_evolution();
     }
 
-    pub fn on_evolution(&mut self) {
+    pub fn set_callback<F>(mut self, callback: F) -> Self
+        where F: FnMut(CallbackInfo) + 'static {
+        self.callback = Box::new(callback);
+        self
+    }
+
+    fn on_evolution(&mut self) {
         let num_cells = self.num_cells();
-        (self.cb_evolution)(
-            LifeGameInfo {
+        (self.callback)(
+            CallbackInfo {
+                event: CallbackEvent::Evolution,
                 generation: self.generation,
                 width: self.width,
                 height: self.height,
-                num_cells: num_cells
+                num_cells: num_cells,
+                cell: None
+            });
+    }
+
+    fn on_set(&mut self, x: isize, y: isize, live: bool) {
+        let num_cells = self.num_cells();
+        (self.callback)(
+            CallbackInfo {
+                event: CallbackEvent::Set,
+                generation: self.generation,
+                width: self.width,
+                height: self.height,
+                num_cells: num_cells,
+                cell: Some(CellInfo { x, y, live })
             });
     }
 
     pub fn num_cells(&self) -> usize {
-        self.world.iter().fold(0, |n, &cell| if cell { n+1 } else { n })
+        self.world.iter().fold(0, |n, &live| if live { n+1 } else { n })
     }
 }
 
@@ -177,8 +210,8 @@ impl fmt::Display for LifeGame {
         let mut world = String::new();
         for y in 0..self.height {
             for x in 0..self.width {
-                let cell = self.get(x, y);
-                let cell = if cell { "o " } else { "x " };
+                let live = self.get(x, y);
+                let cell = if live { "o " } else { "x " };
                 world.push_str(cell);
             }
             world.push_str("\n");
