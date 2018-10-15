@@ -1,8 +1,8 @@
 [package]
-name = "lifegame"
+name = "lifegame-curses"
 version = "0.1.0"
 authors = ["taturou <taturou@gmail.com>"]
 
 [dependencies]
-rand = "0.3.14"
 cursive = "0.9"
+lifegame = { git = "https://github.com/taturou/lifegame-core.git" }

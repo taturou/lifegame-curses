@@ -1,6 +1,5 @@
 extern crate cursive;
-
-mod lifegame;
+extern crate lifegame;
 
 use std::sync::Arc;
 use std::sync::RwLock;
