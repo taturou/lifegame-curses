@@ -8,4 +8,4 @@ cursive = "0.9"
 
 [dependencies.lifegame]
 git = "https://github.com/taturou/lifegame-core.git"
-rev = "1ac91ec7e50c6926c5f0696fcd85238e97f659c0"
+rev = "HEAD"
