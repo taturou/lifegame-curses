@@ -5,4 +5,7 @@ authors = ["taturou <taturou@gmail.com>"]
 
 [dependencies]
 cursive = "0.9"
-lifegame = { git = "https://github.com/taturou/lifegame-core.git" }
+
+[dependencies.lifegame]
+git = "https://github.com/taturou/lifegame-core.git"
+rev = "1ac91ec7e50c6926c5f0696fcd85238e97f659c0"

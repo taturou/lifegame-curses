@@ -71,8 +71,8 @@ impl cursive::view::View for Game {
                         if (position.x >= offset.x) && (position.y >= offset.y) {
                             let mut game = self.game.write().unwrap();
 
-                            let x = ((position.x - offset.x) / 2) as isize;
-                            let y = (position.y - offset.y) as isize;
+                            let x = (position.x - offset.x) / 2;
+                            let y = position.y - offset.y;
 
                             if (x < game.width()) && (y < game.height()) {
                                 let cell = game.get(x, y);
@@ -99,8 +99,8 @@ fn main() {
 
     let game = Arc::new(
                 RwLock::new(
-                    LifeGame::new(((screen_size.x as isize) / 2) - 6,
-                                  (screen_size.y as isize) - 11)
+                    LifeGame::new((screen_size.x / 2) - 6,
+                                  screen_size.y - 11)
                         .set_callback(move |info| {
                             let mut str = format!("Gen:{}, Cells:{}",
                                         info.generation,
