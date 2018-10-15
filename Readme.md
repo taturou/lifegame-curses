@@ -37,6 +37,9 @@ This requires the following products and libraries to build.
     * A TUI (Text User Interface) library for Rust.
 * A curses library
     * A terminal control library that is supported by Cursive.
+* Lifegame-core
+    * The core logics for 'Conway's Game of Life'.
+        * https://github.com/taturou/lifegame-core.git
 
 ## Build & Run
 
