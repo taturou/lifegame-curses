@@ -29,20 +29,14 @@ impl cursive::view::View for Game {
     fn draw(&self, printer: &Printer) {
         let game = self.game.read().unwrap();
 
-        let width = game.width();
-        let height = game.height();
-
-        for y in 0..height {
-            for x in 0..width {
-                let cell = game.get(x, y);
-                let (text, color) = match cell {
-                    true => ("o", Color::Dark(BaseColor::Red)),
-                    false => (".", Color::Light(BaseColor::Black))
-                };
-                printer.with_color(
-                    ColorStyle::new(color, Color::Dark(BaseColor::White)),
-                    |printer| printer.print(((x * 2) as usize, y as usize), text));
-            }
+        for (x, y, cell) in game.iter() {
+            let (text, color) = match cell {
+                true => ("o", Color::Dark(BaseColor::Red)),
+                false => (".", Color::Light(BaseColor::Black))
+            };
+            printer.with_color(
+                ColorStyle::new(color, Color::Dark(BaseColor::White)),
+                |printer| printer.print(((x * 2) as usize, y as usize), text));
         }
     }
 
