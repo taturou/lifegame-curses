@@ -27,12 +27,20 @@ impl Game {
 
 impl cursive::view::View for Game {
     fn draw(&self, printer: &Printer) {
-        let game = self.game.read().unwrap();
+        let mut game = self.game.write().unwrap();
 
-        for (x, y, cell) in game.iter(None) {
+        for (x, y, cell) in game.iter_as_u8(None) {
             let (text, color) = match cell {
-                true => ("o", Color::Dark(BaseColor::Red)),
-                false => (".", Color::Light(BaseColor::Black))
+                0 => (".", Color::Light(BaseColor::Black)),
+                1 => ("1", Color::Dark(BaseColor::Yellow)),
+                2 => ("2", Color::Dark(BaseColor::Cyan)),
+                3 => ("3", Color::Dark(BaseColor::Green)),
+                4 => ("4", Color::Dark(BaseColor::Blue)),
+                5 => ("5", Color::Dark(BaseColor::Magenta)),
+                6 => ("6", Color::Dark(BaseColor::Red)),
+                7 => ("7", Color::Dark(BaseColor::Red)),
+                8 => ("8", Color::Dark(BaseColor::Red)),
+                _ => ("x", Color::Dark(BaseColor::Red))
             };
             printer.with_color(
                 ColorStyle::new(color, Color::Dark(BaseColor::White)),
