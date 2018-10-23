@@ -29,7 +29,7 @@ impl cursive::view::View for Game {
     fn draw(&self, printer: &Printer) {
         let game = self.game.read().unwrap();
 
-        for (x, y, cell) in game.iter() {
+        for (x, y, cell) in game.iter(None) {
             let (text, color) = match cell {
                 true => ("o", Color::Dark(BaseColor::Red)),
                 false => (".", Color::Light(BaseColor::Black))

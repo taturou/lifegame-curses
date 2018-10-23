@@ -154,8 +154,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "lifegame"
-version = "2.1.0"
-source = "git+https://github.com/taturou/lifegame-core.git?rev=ver2.1.0#354fc6d0de153e9ff6cb0348dfa1791b99f7d159"
+version = "2.3.0"
+source = "git+https://github.com/taturou/lifegame-core.git?rev=ver2.3.0#237ff309afd790b6ca717e8220cb3e0ffefac0b1"
 dependencies = [
  "rand 0.3.22 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -165,7 +165,7 @@ name = "lifegame-curses"
 version = "0.1.0"
 dependencies = [
  "cursive 0.9.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "lifegame 2.1.0 (git+https://github.com/taturou/lifegame-core.git?rev=ver2.1.0)",
+ "lifegame 2.3.0 (git+https://github.com/taturou/lifegame-core.git?rev=ver2.3.0)",
 ]
 
 [[package]]
@@ -537,7 +537,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
 "checksum lazy_static 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ca488b89a5657b0a2ecd45b95609b3e848cf1755da332a0da46e2b2b1cb371a7"
 "checksum libc 0.2.43 (registry+https://github.com/rust-lang/crates.io-index)" = "76e3a3ef172f1a0b9a9ff0dd1491ae5e6c948b94479a3021819ba7d860c8645d"
-"checksum lifegame 2.1.0 (git+https://github.com/taturou/lifegame-core.git?rev=ver2.1.0)" = "<none>"
+"checksum lifegame 2.3.0 (git+https://github.com/taturou/lifegame-core.git?rev=ver2.3.0)" = "<none>"
 "checksum lock_api 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)" = "775751a3e69bde4df9b38dd00a1b5d6ac13791e4223d4a0506577f0dd27cfb7a"
 "checksum log 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)" = "d4fcce5fa49cc693c312001daf1d13411c4a5283796bac1084299ea3e567113f"
 "checksum maplit 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)" = "08cbb6b4fef96b6d77bfc40ec491b1690c779e77b05cd9f07f787ed376fd4c43"
